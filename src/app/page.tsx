@@ -1,5 +1,6 @@
 import HeroExamples from '@/components/hero-examples';
 import SearchForm from '@/components/search-form';
+import Image from 'next/image';
 
 export default function HomePage() {
   return (
@@ -7,7 +8,9 @@ export default function HomePage() {
       <div className="mx-auto flex min-h-[calc(100vh-80px)] max-w-5xl flex-col justify-center gap-8 py-8">
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl text-white font-bold" style={{ backgroundColor: '#FF6B35' }}>F</div>
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl" style={{ backgroundColor: '#FF6B35' }}>
+              <Image src="/logo.png" alt="Fudeeko logo" width={48} height={48} className="rounded-3xl object-cover" />
+            </div>
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em]" style={{ color: 'rgba(31,41,55,0.7)' }}>Fudeeko</p>
             </div>
