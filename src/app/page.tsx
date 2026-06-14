@@ -8,8 +8,8 @@ export default function HomePage() {
       <div className="mx-auto flex min-h-[calc(100vh-64px)] max-w-5xl flex-col justify-center gap-6 py-6 sm:py-8">
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl" style={{ backgroundColor: '#FF6B35' }}>
-              <Image src="/icon.png" alt="Fudeeko" width={48} height={48} className="rounded-3xl object-cover" />
+            <div className="inline-flex items-center justify-center" style={{ width: 68, height: 68 }}>
+              <Image src="/icon.png" alt="Fudeeko" width={68} height={68} className="object-contain" />
             </div>
           </div>
         </header>

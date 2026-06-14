@@ -21,6 +21,7 @@ export default function SearchForm() {
   const [status, setStatus] = useState('Finding your location…');
   const [isDetecting, setIsDetecting] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showLocationEditor, setShowLocationEditor] = useState(false);
 
   const hasLocation = locationCoords || locationLabel;
 
@@ -51,7 +52,7 @@ export default function SearchForm() {
 
   const queryLabel = useMemo(() => {
     if (query.trim()) return query.trim();
-    return 'What are you in the mood for?';
+    return 'What are you looking for today?';
   }, [query]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -79,30 +80,61 @@ export default function SearchForm() {
   return (
     <section className="w-full">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="rounded-3xl bg-[rgba(255,255,255,0.9)] p-4 sm:p-5">
+        <div className="rounded-3xl bg-[rgba(255,255,255,0.95)] p-3 sm:p-5">
           <label className="block text-sm font-semibold" style={{ color: 'rgba(31,41,55,0.8)' }}>Search by food, mood, or occasion</label>
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-3">
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              className="w-full rounded-full border bg-white px-5 py-4 text-2xl font-semibold outline-none placeholder:text-slate-400"
+              className="w-full rounded-full border bg-white px-4 py-3 text-xl sm:text-2xl font-semibold outline-none placeholder:text-slate-400"
               style={{ borderColor: 'rgba(31,41,55,0.06)', color: '#1F2937' }}
-              placeholder="e.g. Rooftop dinner, quiet cafe, late-night biryani"
+              placeholder={queryLabel}
             />
-            <button
-              type="submit"
-              disabled={query.trim().length === 0}
-              className={
-                `h-14 inline-flex items-center justify-center rounded-full px-6 text-base font-semibold text-white transition-opacity duration-200 ease-in-out ` +
-                (query.trim().length === 0
-                  ? 'opacity-50 pointer-events-none w-full sm:w-auto'
-                  : 'opacity-100 w-full sm:w-auto')
-              }
-              style={{ backgroundColor: '#FF6B35' }}
-            >
-              Discover
-            </button>
           </div>
+
+          <div className="mt-3 flex items-center justify-between">
+            <div className="text-sm text-[rgba(31,41,55,0.8)] flex items-center gap-3">
+              <span className="text-lg">📍</span>
+              <span>
+                {locationInput
+                  ? locationInput
+                  : locationCoords
+                  ? locationLabel
+                  : isDetecting
+                  ? 'Detecting…'
+                  : 'Location unavailable'}
+              </span>
+              <button type="button" className="ml-2 text-sm font-semibold underline" onClick={() => setShowLocationEditor(true)}>
+                Change Location
+              </button>
+            </div>
+            <div className="text-xs text-[rgba(31,41,55,0.6)]">{isDetecting ? 'Detecting…' : 'Using location'}</div>
+          </div>
+
+          {showLocationEditor ? (
+            <div className="mt-3">
+              <div className="rounded-lg bg-white p-3 shadow-sm">
+                <input
+                  value={locationInput}
+                  onChange={(e) => setLocationInput(e.target.value)}
+                  className="w-full rounded-md border px-3 py-2 text-sm outline-none"
+                  style={{ borderColor: 'rgba(31,41,55,0.06)', color: '#1F2937' }}
+                  placeholder="Enter city or neighborhood (e.g. Kannur)"
+                />
+                <div className="mt-3 flex items-center justify-end gap-2">
+                  <button type="button" onClick={() => { setShowLocationEditor(false); }} className="text-sm text-[rgba(31,41,55,0.7)]">Cancel</button>
+                  <button
+                    type="button"
+                    onClick={() => { setShowLocationEditor(false); setError(null); }}
+                    className="rounded-md bg-[rgba(255,107,53,1)] px-4 py-2 text-sm font-semibold text-white"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
           <div className="mt-4 flex flex-wrap gap-3">
             {examples.map((item) => (
               <button
@@ -116,29 +148,19 @@ export default function SearchForm() {
               </button>
             ))}
           </div>
-        </div>
 
-        <div className="rounded-2xl bg-white p-4 sm:p-5">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-semibold" style={{ color: 'rgba(31,41,55,0.8)' }}>Location</p>
-              <p className="mt-1 text-sm" style={{ color: 'rgba(31,41,55,0.6)' }}>Your current location or manual fallback.</p>
-            </div>
-            <span className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em]" style={{ backgroundColor: 'rgba(31,41,55,0.06)', color: 'rgba(31,41,55,0.7)' }}>
-              {isDetecting ? 'Detecting…' : 'Ready'}
-            </span>
-          </div>
-          <div className="mt-4 space-y-3">
-            <div className="rounded-lg border px-4 py-3 text-sm" style={{ borderColor: 'rgba(31,41,55,0.06)', backgroundColor: 'rgba(0,0,0,0.02)', color: 'rgba(31,41,55,0.85)' }}>
-              {locationCoords ? `${locationLabel} • ${locationCoords.lat.slice(0, 7)}, ${locationCoords.lng.slice(0, 7)}` : status}
-            </div>
-            <input
-              value={locationInput}
-              onChange={(event) => setLocationInput(event.target.value)}
-              className="w-full rounded-full border bg-white px-4 py-3 text-sm outline-none"
-              style={{ borderColor: 'rgba(31,41,55,0.06)', color: '#1F2937' }}
-              placeholder="Manual location fallback (e.g. Bangalore, Church Street)"
-            />
+          <div className="mt-5 flex justify-center">
+            <button
+              type="submit"
+              disabled={query.trim().length === 0}
+              className={
+                `w-full sm:w-56 h-14 rounded-full text-base font-semibold text-white transition-opacity duration-200 ease-in-out flex items-center justify-center ` +
+                (query.trim().length === 0 ? 'opacity-50 pointer-events-none' : 'opacity-100')
+              }
+              style={{ backgroundColor: '#FF6B35' }}
+            >
+              Discover
+            </button>
           </div>
         </div>
 
