@@ -4,15 +4,12 @@ import Image from 'next/image';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen px-4 py-8 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFFDF8', color: '#1F2937' }}>
-      <div className="mx-auto flex min-h-[calc(100vh-80px)] max-w-5xl flex-col justify-center gap-8 py-8">
+    <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFFDF8', color: '#1F2937' }}>
+      <div className="mx-auto flex min-h-[calc(100vh-64px)] max-w-5xl flex-col justify-center gap-6 py-6 sm:py-8">
         <header className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl" style={{ backgroundColor: '#FF6B35' }}>
-              <Image src="/logo.png" alt="Fudeeko logo" width={48} height={48} className="rounded-3xl object-cover" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em]" style={{ color: 'rgba(31,41,55,0.7)' }}>Fudeeko</p>
+              <Image src="/icon.png" alt="Fudeeko" width={48} height={48} className="rounded-3xl object-cover" />
             </div>
           </div>
         </header>

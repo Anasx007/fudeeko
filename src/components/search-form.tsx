@@ -91,7 +91,13 @@ export default function SearchForm() {
             />
             <button
               type="submit"
-              className="inline-flex h-14 items-center justify-center rounded-full px-6 text-base font-semibold text-white"
+              disabled={query.trim().length === 0}
+              className={
+                `h-14 inline-flex items-center justify-center rounded-full px-6 text-base font-semibold text-white transition-opacity duration-200 ease-in-out ` +
+                (query.trim().length === 0
+                  ? 'opacity-50 pointer-events-none w-full sm:w-auto'
+                  : 'opacity-100 w-full sm:w-auto')
+              }
               style={{ backgroundColor: '#FF6B35' }}
             >
               Discover
